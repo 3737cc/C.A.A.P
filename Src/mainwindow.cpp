@@ -129,22 +129,79 @@ void MainWindow::on_Save_file_button_superposing_clicked()
     }
 }
 
-
-
-
 void MainWindow::on_Superposition_button_clicked()
 {
-    //if (folderPath.isEmpty() || targetFilePath.isEmpty() || saveFolderPath.isEmpty()) {
-    //    qDebug() << "Please select folder, target file, and save folder paths.";
-    //    return;
-    //}
-    //const QString& fitsFile;
-    //QDir directory(folderPath);
-    //QStringList fitsFiles = directory.entryList(QStringList() << "*.fits", QDir::Files);
-    //QString filePath = folderPath + "/" + fitsFile;
-    //QByteArray utf8DatFoler = filePath.toUtf8();
-    //const char* charFolderPath = utf8DatFoler.constData();
-    //FitsMerger fitsMerger;
-    //fitsMerger.processFitsFiles(charFolderPath, outputFile);
+    FitsMerger fitsMerger;
+    Superposition_folderPath;
+    Superposition_saveFolderPath; 
+
+    QDir dir(Superposition_folderPath);
+
+    // 获取文件夹下所有的文件
+    QFileInfoList fileInfoList = dir.entryInfoList(QDir::Files);
+
+    // 过滤出 fits 文件
+    QStringList fitsFiles;
+    for (const QFileInfo& fileInfo : fileInfoList) {
+        if (fileInfo.suffix().toLower() == "fits") {
+            fitsFiles.append(fileInfo.absoluteFilePath());
+        }
+    }
+
+    // 将 QStringList 转换为 std::vector<std::string>
+    std::vector<std::string> inputFiles;
+    for (const QString& filePath : fitsFiles) {
+        inputFiles.push_back(filePath.toStdString());
+    }
+
+    std::string saveLocation = Superposition_saveFolderPath.toStdString();
+
+    fitsMerger.processFitsFiles(inputFiles, saveLocation);
+}
+
+//降噪相关操作
+
+void MainWindow::on_Noise_reduction_function_button_2_clicked()
+{
+    int currentIndex = ui->Noise_reduction_widget->currentIndex();
+
+    // 如果当前页面是页面0，切换到其他页面；否则，切换回页面0
+    ui->Noise_reduction_widget->setCurrentIndex(currentIndex == 0 ? 1 : 0);
+}
+
+
+void MainWindow::on_Select_file_button_noise_reduction_clicked()
+{
+    Noise_reduction_targetFilePath = QFileDialog::getOpenFileName(this, "选择目标文件", QDir::homePath(), "FITS Files (*.fits)");
+    if (!Noise_reduction_targetFilePath.isEmpty()) {
+        ui->Object_file_label_aligning->setText("目标文件路径: " + Noise_reduction_targetFilePath);
+        qDebug() << "Selected target file path: " << Noise_reduction_targetFilePath;
+    }
+}
+
+
+void MainWindow::on_Save_file_button_noise_reduction_clicked()
+{
+    Noise_reduction_saveFolderPath = QFileDialog::getExistingDirectory(this, "选择保存文件夹", QDir::homePath());
+    if (!Noise_reduction_saveFolderPath.isEmpty()) {
+        ui->Save_file_label_superposing->setText("保存文件夹路径: " + Noise_reduction_saveFolderPath);
+        qDebug() << "Selected save folder path: " << Noise_reduction_saveFolderPath;
+    }
+}
+
+
+void MainWindow::on_Noise_reduction_button_clicked()
+{
+
+}
+
+//校准相关操作
+
+void MainWindow::on_Calibration_function_button_clicked()
+{
+    int currentIndex = ui->Calibration_widget->currentIndex();
+
+    // 如果当前页面是页面0，切换到其他页面；否则，切换回页面0
+    ui->Calibration_widget->setCurrentIndex(currentIndex == 0 ? 1 : 0);
 }
 

@@ -28,9 +28,6 @@ public:
     QString Noise_reduction_targetFilePath;
     QString Noise_reduction_saveFolderPath;
 
-    void on_pushButton_toggled(bool checked);
-
-    void on_pushButton_pressed();
 
 private slots:
     //对齐相关操作
