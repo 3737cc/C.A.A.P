@@ -1,0 +1,12 @@
+prefix=C:/Program Files (x86)/CFITSIO
+exec_prefix=C:/Program Files (x86)/CFITSIO
+libdir=C:/Program Files (x86)/CFITSIO/lib
+includedir=C:/Program Files (x86)/CFITSIO/include/
+
+Name: cfitsio
+Description: FITS File Subroutine Library
+URL: https://heasarc.gsfc.nasa.gov/fitsio/
+Version: 4.3.1
+Libs: -L${libdir} -lcfitsio
+Libs.private:  -lz -lm
+Cflags: -I${includedir}
