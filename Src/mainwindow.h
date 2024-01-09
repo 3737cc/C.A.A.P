@@ -64,6 +64,7 @@ private slots:
 
     void on_Calibration_function_button_clicked();
 
+
 private:
     Ui::MainWindow *ui;
 };

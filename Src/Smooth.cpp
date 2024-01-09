@@ -43,7 +43,7 @@ void Smooth::processFitsFile(const char* inputFitsPath, const char* outputFitsPa
     cv::GaussianBlur(inputImage, smoothedImage, cv::Size(5, 5), 0);  // 使用高斯滤波进行平滑
 
     // 归一化图像数据到 [0, 4096] 范围
-    cv::normalize(smoothedImage, smoothedImage, 0, 4096, cv::NORM_MINMAX, -1, cv::Mat());
+    cv::normalize(smoothedImage, smoothedImage, 0, 255, cv::NORM_MINMAX, -1, cv::Mat());
 
     // 创建新的FITS文件
     fitsfile* newFitsPtr;

@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "filehandler.h"
 #include "smooth.h"
 #include "fitsmerger.h"
 #include "fitsaligner.h"
@@ -132,8 +131,6 @@ void MainWindow::on_Save_file_button_superposing_clicked()
 void MainWindow::on_Superposition_button_clicked()
 {
     FitsMerger fitsMerger;
-    Superposition_folderPath;
-    Superposition_saveFolderPath; 
 
     QDir dir(Superposition_folderPath);
 
@@ -174,7 +171,7 @@ void MainWindow::on_Select_file_button_noise_reduction_clicked()
 {
     Noise_reduction_targetFilePath = QFileDialog::getOpenFileName(this, "选择目标文件", QDir::homePath(), "FITS Files (*.fits)");
     if (!Noise_reduction_targetFilePath.isEmpty()) {
-        ui->Object_file_label_aligning->setText("目标文件路径: " + Noise_reduction_targetFilePath);
+        ui->Select_file_label_noise_reduction->setText("目标文件路径: " + Noise_reduction_targetFilePath);
         qDebug() << "Selected target file path: " << Noise_reduction_targetFilePath;
     }
 }
@@ -184,7 +181,7 @@ void MainWindow::on_Save_file_button_noise_reduction_clicked()
 {
     Noise_reduction_saveFolderPath = QFileDialog::getExistingDirectory(this, "选择保存文件夹", QDir::homePath());
     if (!Noise_reduction_saveFolderPath.isEmpty()) {
-        ui->Save_file_label_superposing->setText("保存文件夹路径: " + Noise_reduction_saveFolderPath);
+        ui->Save_file_label_noise_reduction->setText("保存文件夹路径: " + Noise_reduction_saveFolderPath);
         qDebug() << "Selected save folder path: " << Noise_reduction_saveFolderPath;
     }
 }
@@ -192,7 +189,14 @@ void MainWindow::on_Save_file_button_noise_reduction_clicked()
 
 void MainWindow::on_Noise_reduction_button_clicked()
 {
+    Smooth smooth;
+    QByteArray utf8objectFile = Noise_reduction_targetFilePath.toUtf8();
+    const char* objectFile = utf8objectFile.constData();
 
+    QString FFolderPath = Noise_reduction_saveFolderPath + "/Noise_reduction.fits" ;
+    QByteArray utf8saveLocation = FFolderPath.toUtf8();
+    const char* saveLocation = utf8saveLocation.constData();
+    smooth.processFitsFile(objectFile,saveLocation);
 }
 
 //校准相关操作
@@ -204,4 +208,6 @@ void MainWindow::on_Calibration_function_button_clicked()
     // 如果当前页面是页面0，切换到其他页面；否则，切换回页面0
     ui->Calibration_widget->setCurrentIndex(currentIndex == 0 ? 1 : 0);
 }
+
+
 
