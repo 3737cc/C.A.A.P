@@ -56,7 +56,9 @@ Alignment of FITS files: FITS files can be aligned to eliminate image distortion
 The usage of the software is as follows:
 
 Open the software and select the "Open File" button to select the FITS file to be processed.
+
 Select the operation to be performed.
+
 Click the "Start" button to start the processing.
 
 展望
@@ -72,8 +74,11 @@ Click the "Start" button to start the processing.
 In the future, the software will continue to be developed to add more features, including:
 
 Support for more types of FITS files.
+
 Support for more calibration and denoising algorithms.
+
 Support for more advanced alignment algorithms.
+
 注意事项
 
 软件需要自行下载OpenCV库，将opencv_world480d.dll放在opencv下bin中与debug下即可。
@@ -83,3 +88,13 @@ Support for more advanced alignment algorithms.
 软件使用了OpenCV库来进行图像处理，包括对齐、降噪等。
 
 软件使用了Qt库来构建图形用户界面。
+
+Matters needing attention
+
+Software needs to download OpenCV library, opencv_world480d.dll in opencv under bin and debug can be.
+
+The software uses the cfitsio library to read and write FITS files.
+
+The software uses OpenCV library for image processing, including alignment, noise reduction and so on.
+
+The software uses the Qt library to build the graphical user interface.
