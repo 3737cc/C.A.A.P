@@ -19,27 +19,28 @@ The software requires you to download the OpenCV library yourself and place the 
 
 The software uses the following libraries:
 
-cfitsio: A library for reading and writing FITS files.
+cfitsio: A library for reading and writing FITS files
+
 OpenCV: A library for image processing.
+
 Qt: A library for graphical user interfaces.
 
 功能：
 
 FITS文件叠加：可将多个FITS文件叠加在一起，生成一个新的FITS文件。
 
-
 FITS文件校准：可对FITS文件进行校准，消除系统误差。
-
 
 FITS文件降噪：可对FITS文件进行降噪，提高图像质量。
 
-
 FITS文件对齐：可对FITS文件进行对齐，消除图像畸变。
 
-
 Superposition of FITS files: Multiple FITS files can be superimposed to generate a new FITS file.
+
 Calibration of FITS files: FITS files can be calibrated to eliminate system errors.
+
 Denoising of FITS files: FITS files can be denoised to improve image quality.
+
 Alignment of FITS files: FITS files can be aligned to eliminate image distortion.
 
 使用方法
