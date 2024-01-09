@@ -23,7 +23,7 @@ cfitsio: A library for reading and writing FITS files.
 OpenCV: A library for image processing.
 Qt: A library for graphical user interfaces.
 
-功能
+功能：
 
 FITS文件叠加：可将多个FITS文件叠加在一起，生成一个新的FITS文件。
 
