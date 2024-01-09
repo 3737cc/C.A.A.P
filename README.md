@@ -27,9 +27,12 @@ Qt: A library for graphical user interfaces.
 
 FITS文件叠加：可将多个FITS文件叠加在一起，生成一个新的FITS文件。
 
+
 FITS文件校准：可对FITS文件进行校准，消除系统误差。
 
+
 FITS文件降噪：可对FITS文件进行降噪，提高图像质量。
+
 
 FITS文件对齐：可对FITS文件进行对齐，消除图像畸变。
 
