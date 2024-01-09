@@ -24,6 +24,10 @@ public:
     QString Superposition_folderPath;    // 用于存储选择的文件夹路径
     QString Superposition_saveFolderPath; // 用于存储选择的保存文件夹路径
 
+//降噪相关变量
+    QString Noise_reduction_targetFilePath;
+    QString Noise_reduction_saveFolderPath;
+
     void on_pushButton_toggled(bool checked);
 
     void on_pushButton_pressed();
@@ -48,6 +52,20 @@ private slots:
     void on_Save_file_button_superposing_clicked();
 
     void on_Superposition_button_clicked();
+
+    //降噪相关操作
+
+    void on_Noise_reduction_function_button_2_clicked();
+
+    void on_Select_file_button_noise_reduction_clicked();
+
+    void on_Save_file_button_noise_reduction_clicked();
+
+    void on_Noise_reduction_button_clicked();
+
+    //校准相关操作
+
+    void on_Calibration_function_button_clicked();
 
 private:
     Ui::MainWindow *ui;

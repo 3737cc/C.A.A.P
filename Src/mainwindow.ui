@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>590</x>
-      <y>50</y>
+      <y>30</y>
       <width>491</width>
       <height>211</height>
      </rect>
@@ -121,7 +121,7 @@
     </widget>
     <widget class="QWidget" name="page_2"/>
    </widget>
-   <widget class="QPushButton" name="calibrateButton">
+   <widget class="QPushButton" name="Calibration_function_button">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -147,7 +147,7 @@
      <string>叠加功能</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="reductionButton">
+   <widget class="QPushButton" name="Noise_reduction_function_button_2">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -160,26 +160,92 @@
      <string>降噪功能</string>
     </property>
    </widget>
-   <widget class="QStackedWidget" name="Superposition_function_widget">
+   <widget class="QStackedWidget" name="Noise_reduction_widget">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>350</y>
-      <width>231</width>
-      <height>181</height>
+      <x>150</x>
+      <y>280</y>
+      <width>371</width>
+      <height>241</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page_3"/>
-    <widget class="QWidget" name="page_4"/>
+    <widget class="QWidget" name="page_4">
+     <widget class="QLabel" name="Select_file_label_noise_reduction">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>45</y>
+        <width>481</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>选择文件路径</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Select_file_button_noise_reduction">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>选择文件</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Noise_reduction_button">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>140</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>降噪</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Save_file_button_noise_reduction">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>保存文件</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Save_file_label_noise_reduction">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>90</y>
+        <width>481</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>保存文件路径</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QStackedWidget" name="Superposition_widget">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>50</y>
+      <x>160</x>
+      <y>30</y>
       <width>371</width>
       <height>191</height>
      </rect>
@@ -269,6 +335,32 @@
      <string>对齐功能</string>
     </property>
    </widget>
+   <widget class="QStackedWidget" name="Calibration_widget">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>260</y>
+      <width>411</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="page_7">
+     <widget class="QPushButton" name="Noise_reduction_button_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>190</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>校准</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_8"/>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
@@ -278,8 +370,8 @@
   <tabstop>Save_file_button_aligning</tabstop>
   <tabstop>Alignment_button</tabstop>
   <tabstop>Superposition_function_button</tabstop>
-  <tabstop>reductionButton</tabstop>
-  <tabstop>calibrateButton</tabstop>
+  <tabstop>Noise_reduction_function_button_2</tabstop>
+  <tabstop>Calibration_function_button</tabstop>
  </tabstops>
  <resources/>
  <connections/>
