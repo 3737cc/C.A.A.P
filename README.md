@@ -72,7 +72,7 @@ Support for more calibration and denoising algorithms.
 Support for more advanced alignment algorithms.
 注意事项
 
-软件需要自行下载OpenCV库，将opencv_world480d.dll放在opencv下bin中即可。
+软件需要自行下载OpenCV库，将opencv_world480d.dll放在opencv下bin中与debug下即可。
 
 软件使用了cfitsio库来读取和写入FITS文件。
 
