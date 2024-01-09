@@ -64,6 +64,9 @@ Support for more advanced alignment algorithms.
 注意事项
 
 软件需要自行下载OpenCV库，将opencv_world480d.dll放在opencv下bin中即可。
+
 软件使用了cfitsio库来读取和写入FITS文件。
+
 软件使用了OpenCV库来进行图像处理，包括对齐、降噪等。
+
 软件使用了Qt库来构建图形用户界面。
