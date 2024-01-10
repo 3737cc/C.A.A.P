@@ -4,31 +4,46 @@ FitscaLibration::FitscaLibration() {}
 
 FitscaLibration::~FitscaLibration() {}
 
-void FitscaLibration::darkCalibration(const string& originalFilePath, const string& darkFieldPath, const string& saveLocation) {
-    Mat originalImage = readFitsImage(originalFilePath);
-    Mat darkField = readFitsImage(darkFieldPath);
-
-    Mat calibratedImage = calibrate(originalImage, darkField);
-
-    saveFitsImage(saveLocation, "DarkCalibratedImage.fits", calibratedImage);
-}
-
 void FitscaLibration::flatCalibration(const string& originalFilePath, const string& flatFieldPath, const string& saveLocation) {
     Mat originalImage = readFitsImage(originalFilePath);
     Mat flatField = readFitsImage(flatFieldPath);
 
-    Mat calibratedImage = calibrate(originalImage, flatField);
+    Mat calibratedImage = flatCalibrate(originalImage, flatField);
 
     saveFitsImage(saveLocation, "FlatCalibratedImage.fits", calibratedImage);
 }
+
+void FitscaLibration::darkCalibration(const string& originalFilePath, const string& darkFieldPath, const string& saveLocation) {
+    Mat originalImage = readFitsImage(originalFilePath);
+    Mat darkField = readFitsImage(darkFieldPath);
+
+    Mat calibratedImage = darkCalibrate(originalImage, darkField);
+
+    saveFitsImage(saveLocation, "DarkCalibratedImage.fits", calibratedImage);
+}
+
 
 void FitscaLibration::biasCalibration(const string& originalFilePath, const string& biasFieldPath, const string& saveLocation) {
     Mat originalImage = readFitsImage(originalFilePath);
     Mat biasField = readFitsImage(biasFieldPath);
 
-    Mat calibratedImage = calibrate(originalImage, biasField);
+    Mat calibratedImage = biasCalibrate(originalImage, biasField);
 
     saveFitsImage(saveLocation, "BiasCalibratedImage.fits", calibratedImage);
+}
+
+//一键校准
+void FitscaLibration::calibration(const string& originalFilePath, const string& flatFieldPath, const string& darkFieldPath, const string& biasFieldPath, const string& saveLocation) {
+    Mat originalImage = readFitsImage(originalFilePath);
+    Mat flatField = readFitsImage(flatFieldPath);
+    Mat darkField = readFitsImage(darkFieldPath);
+    Mat biasField = readFitsImage(biasFieldPath);
+
+    Mat calibratedImage = calibrate(originalImage, flatField, darkField, biasField);
+
+    saveFitsImage(saveLocation, "One-clickCalibratedImage.fits", calibratedImage);
+
+
 }
 
 Mat FitscaLibration::readFitsImage(const string& filePath) {
@@ -108,9 +123,31 @@ void FitscaLibration::saveFitsImage(const string& saveLocation, const string& ou
     fits_close_file(outfptr, &status);
 }
 
-Mat FitscaLibration::calibrate(const Mat& originalImage, const Mat& calibrationField) {
-    // 校准过程，例如原图减去场图
+//平常校准
+Mat FitscaLibration::flatCalibrate(const Mat& originalImage, const Mat& flatImage) {
     Mat calibratedImage;
-    subtract(originalImage, calibrationField, calibratedImage);
+    subtract(originalImage, flatImage, calibratedImage);
+    return calibratedImage;
+}
+
+//暗场校准
+Mat FitscaLibration::darkCalibrate(const Mat& originalImage, const Mat& darkImage) {
+    Mat calibratedImage;
+    subtract(originalImage, darkImage, calibratedImage);
+    return calibratedImage;
+}
+
+//偏置场校准
+Mat FitscaLibration::biasCalibrate(const Mat& originalImage, const Mat& biasImage) {
+    Mat calibratedImage;
+    subtract(originalImage, biasImage, calibratedImage);
+    return calibratedImage;
+}
+
+Mat FitscaLibration::calibrate(const Mat& flatImage, const Mat& darkImage, const Mat& biasImage, const Mat& originalImage) {
+    Mat calibratedImage;
+    subtract(originalImage, flatImage, calibratedImage);
+    subtract(originalImage, darkImage, calibratedImage);
+    subtract(originalImage, biasImage, calibratedImage);//减去三个场图
     return calibratedImage;
 }

@@ -83,6 +83,12 @@ private slots:
 
     void on_Flat_field_button_clicked();
 
+    void on_Dark_field_button_clicked();
+
+    void on_Bias_field_button_clicked();
+
+    void on_Calibration_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
