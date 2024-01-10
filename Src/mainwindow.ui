@@ -250,6 +250,9 @@
       <height>191</height>
      </rect>
     </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
     <widget class="QWidget" name="page_5">
      <widget class="QLabel" name="Save_file_label_superposing">
       <property name="geometry">
@@ -338,24 +341,128 @@
    <widget class="QStackedWidget" name="Calibration_widget">
     <property name="geometry">
      <rect>
-      <x>590</x>
+      <x>570</x>
       <y>260</y>
       <width>411</width>
       <height>241</height>
      </rect>
     </property>
     <widget class="QWidget" name="page_7">
-     <widget class="QPushButton" name="Noise_reduction_button_2">
+     <widget class="QPushButton" name="Calibration_button">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>190</y>
+        <x>320</x>
+        <y>200</y>
         <width>75</width>
         <height>23</height>
        </rect>
       </property>
       <property name="text">
        <string>校准</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Flat_field_button">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>200</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>平场校准</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Dark_field_button">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>200</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>暗场校准</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Bias_field_button">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>200</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>偏置场校准</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Save_file_button_calibration">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>80</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>保存文件</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Select_file_button_calibration">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>选择文件</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Object_file_button_flat">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>80</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>平场文件</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Object_file_button_dark">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>80</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>暗场文件</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Object_file_button_bias">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>80</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>偏置场文件</string>
       </property>
      </widget>
     </widget>

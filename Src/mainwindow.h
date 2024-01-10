@@ -28,6 +28,12 @@ public:
     QString Noise_reduction_targetFilePath;
     QString Noise_reduction_saveFolderPath;
 
+//校准相关变量
+    QString Calibration_folderPath;     //选择
+    QString Flat_targetFilePath;
+    QString Dark_targetFilePath;
+    QString Bias_targetFilePath;
+    QString Calibration_saveFolderPath; //保存
 
 private slots:
     //对齐相关操作
@@ -64,6 +70,18 @@ private slots:
 
     void on_Calibration_function_button_clicked();
 
+
+    void on_Select_file_button_calibration_clicked();
+
+    void on_Object_file_button_flat_clicked();
+
+    void on_Object_file_button_dark_clicked();
+
+    void on_Object_file_button_bias_clicked();
+
+    void on_Save_file_button_calibration_clicked();
+
+    void on_Flat_field_button_clicked();
 
 private:
     Ui::MainWindow *ui;

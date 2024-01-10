@@ -28,6 +28,7 @@ set(PROJECT_SOURCES
     src/mainwindow.cpp
     src/mainwindow.ui
     src/mainwindow.h
+    src/fitscalibration.cpp
 )
 
 
@@ -35,7 +36,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(GUI
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        src/dialog.ui
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET untitled1 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

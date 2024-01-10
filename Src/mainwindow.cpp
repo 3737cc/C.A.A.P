@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "smooth.h"
+#include "fitscalibration.h"
 #include "fitsmerger.h"
 #include "fitsaligner.h"
 #include "QDebug"
@@ -69,7 +70,7 @@ void MainWindow::on_Alignment_button_clicked()
 
 void MainWindow::on_Select_file_button_aligning_clicked()
 {
-    Alignment_folderPath = QFileDialog::getExistingDirectory(this, "选择文件夹", QDir::homePath());
+    Alignment_folderPath = QFileDialog::getExistingDirectory(this, "选择包含对齐fits图文件夹", QDir::homePath());
 
     if (!Alignment_folderPath.isEmpty()) {
         // 用户选择了文件，可以进行相应的操作
@@ -81,7 +82,7 @@ void MainWindow::on_Select_file_button_aligning_clicked()
 
 void MainWindow::on_Object_file_button_aligning_clicked()
 {
-    Alignment_targetFilePath = QFileDialog::getOpenFileName(this, "选择目标文件", QDir::homePath(), "FITS Files (*.fits)");
+    Alignment_targetFilePath = QFileDialog::getOpenFileName(this, "选择对齐目标文件", QDir::homePath(), "FITS Files (*.fits)");
     if (!Alignment_targetFilePath.isEmpty()) {
         ui->Object_file_label_aligning->setText("目标文件路径: " + Alignment_targetFilePath);
         qDebug() << "Selected target file path: " << Alignment_targetFilePath;
@@ -110,7 +111,7 @@ void MainWindow::on_Superposition_function_button_clicked()
 
 void MainWindow::on_Select_file_button_superposing_clicked()
 {
-    Superposition_folderPath = QFileDialog::getExistingDirectory(this, "选择文件夹", QDir::homePath());
+    Superposition_folderPath = QFileDialog::getExistingDirectory(this, "选择包含叠加fits图文件夹", QDir::homePath());
 
     if (!Superposition_folderPath.isEmpty()) {
         // 用户选择了文件，可以进行相应的操作
@@ -169,7 +170,7 @@ void MainWindow::on_Noise_reduction_function_button_2_clicked()
 
 void MainWindow::on_Select_file_button_noise_reduction_clicked()
 {
-    Noise_reduction_targetFilePath = QFileDialog::getOpenFileName(this, "选择目标文件", QDir::homePath(), "FITS Files (*.fits)");
+    Noise_reduction_targetFilePath = QFileDialog::getOpenFileName(this, "选择需降噪文件", QDir::homePath(), "FITS Files (*.fits)");
     if (!Noise_reduction_targetFilePath.isEmpty()) {
         ui->Select_file_label_noise_reduction->setText("目标文件路径: " + Noise_reduction_targetFilePath);
         qDebug() << "Selected target file path: " << Noise_reduction_targetFilePath;
@@ -210,4 +211,61 @@ void MainWindow::on_Calibration_function_button_clicked()
 }
 
 
+
+
+void MainWindow::on_Select_file_button_calibration_clicked()
+{
+    Calibration_folderPath = QFileDialog::getOpenFileName(this, "选择需校准文件", QDir::homePath(), "FITS Files (*.fits)");
+    if (!Calibration_folderPath.isEmpty()) {
+        qDebug() << "Selected target file path: " << Calibration_folderPath;
+    }
+}
+
+
+void MainWindow::on_Object_file_button_flat_clicked()
+{
+    Flat_targetFilePath = QFileDialog::getOpenFileName(this, "选择平场文件", QDir::homePath(), "FITS Files (*.fits)");
+    if (!Flat_targetFilePath.isEmpty()) {
+        qDebug() << "Selected target file path: " << Flat_targetFilePath;
+    }
+}
+
+
+void MainWindow::on_Object_file_button_dark_clicked()
+{
+    Dark_targetFilePath = QFileDialog::getOpenFileName(this, "选择暗场文件", QDir::homePath(), "FITS Files (*.fits)");
+    if (!Dark_targetFilePath.isEmpty()) {
+        qDebug() << "Selected target file path: " << Dark_targetFilePath;
+    }
+}
+
+
+void MainWindow::on_Object_file_button_bias_clicked()
+{
+    Bias_targetFilePath = QFileDialog::getOpenFileName(this, "选择偏置场文件", QDir::homePath(), "FITS Files (*.fits)");
+    if (!Bias_targetFilePath.isEmpty()) {
+        qDebug() << "Selected target file path: " << Bias_targetFilePath;
+    }
+}
+
+
+void MainWindow::on_Save_file_button_calibration_clicked()
+{
+
+    Calibration_saveFolderPath = QFileDialog::getExistingDirectory(this, "选择保存文件夹", QDir::homePath());
+    if (!Calibration_saveFolderPath.isEmpty()) {
+        qDebug() << "Selected save folder path: " << Calibration_saveFolderPath;
+    }
+}
+
+
+
+void MainWindow::on_Flat_field_button_clicked()
+{
+    FitscaLibration fitscaLibration;
+    const std::string Calibration_path = Calibration_folderPath.toStdString();
+    const std::string Flat_path = Flat_targetFilePath.toStdString();
+    const std::string Save_path = Calibration_saveFolderPath.toStdString();
+    fitscaLibration.flatCalibration(Calibration_path, Flat_path, Save_path);
+}
 
