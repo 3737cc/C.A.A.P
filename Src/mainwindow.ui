@@ -108,7 +108,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>校准</string>
+         <string>一键校准</string>
         </property>
        </widget>
        <widget class="QPushButton" name="Flat_field_button">

@@ -35,7 +35,6 @@ void MainWindow::on_Alignment_function_button_clicked()
 
 void MainWindow::on_Alignment_button_clicked()
 {
-    long naxes[2];
 
     if (Alignment_folderPath.isEmpty() || Alignment_targetFilePath.isEmpty() || Alignment_saveFolderPath.isEmpty()) {
         qDebug() << "Please select folder, target file, and save folder paths.";
@@ -48,24 +47,18 @@ void MainWindow::on_Alignment_button_clicked()
         QString filePath = Alignment_folderPath + "/" + fitsFile;
         QByteArray utf8DatFoler = filePath.toUtf8();
         const char* charFolderPath = utf8DatFoler.constData();
-        Mat image = loadFitsImage(charFolderPath, naxes);
 
-        QByteArray utfTargetFoler = Alignment_targetFilePath.toUtf8();
-        const char* charTargetFilePath = utfTargetFoler.constData();
-        Mat targetImage = loadFitsImage(charTargetFilePath, naxes);
+        QString targetFilePath = Alignment_targetFilePath;
+        QByteArray utf8TargetFoler = targetFilePath.toUtf8();
+        const char* charTargetFilePath = utf8TargetFoler.constData();
 
-        vector<KeyPoint> keypoints1, keypoints2;
-        Mat descriptors1, descriptors2;
-        detectAndComputeORB(image, keypoints1, descriptors1);
-        detectAndComputeORB(targetImage, keypoints2, descriptors2);
-        Mat H = matchAndComputeHomography(descriptors1, descriptors2, keypoints1, keypoints2);
-        Mat alignedImage = warpImage(image, H, targetImage);
-
-        QString FFolderPath = Alignment_saveFolderPath + "/Aligned_" + fitsFile;
-        QByteArray utf8saveFoler = FFolderPath.toUtf8();
+        QString savePath = Alignment_saveFolderPath + "/Aligned_" + fitsFile;
+        QByteArray utf8saveFoler = savePath.toUtf8();
         const char* charsavePath = utf8saveFoler.constData();
-        saveFitsImage(charsavePath, alignedImage, naxes);
+
+        processFITSFilesAffine(charFolderPath, charTargetFilePath, charsavePath);
     }
+
 }
 
 void MainWindow::on_Select_file_button_aligning_clicked()
