@@ -160,6 +160,82 @@ Mat matchAndComputeAffine(const Mat& descriptors1, const Mat& descriptors2, vect
     return affineMatrix;
 }
 
+//刚性对齐RigidTransform
+Mat matchAndComputeRigidTransform(const Mat& descriptors1, const Mat& descriptors2,
+    vector<KeyPoint>& keypoints1, vector<KeyPoint>& keypoints2) {
+    if (descriptors1.empty() || descriptors2.empty() || keypoints1.empty() || keypoints2.empty()) {
+        cerr << "Error: Input matrices or keypoints are empty." << endl;
+        return Mat();
+    }
+
+    BFMatcher matcher(NORM_HAMMING);
+    vector<DMatch> matches;
+    matcher.match(descriptors1, descriptors2, matches);
+
+    // Find good matches
+    double max_dist = 0; double min_dist = 100;
+    for (int i = 0; i < descriptors1.rows; i++) {
+        double dist = matches[i].distance;
+        if (dist < min_dist) min_dist = dist;
+        if (dist > max_dist) max_dist = dist;
+    }
+
+    vector<DMatch> good_matches;
+    for (int i = 0; i < descriptors1.rows; i++) {
+        if (matches[i].distance <= max(2 * min_dist, 30.0)) {
+            good_matches.push_back(matches[i]);
+        }
+    }
+
+    vector<Point2f> points1;
+    vector<Point2f> points2;
+    for (size_t i = 0; i < good_matches.size(); i++) {
+        points1.push_back(keypoints1[good_matches[i].queryIdx].pt);
+        points2.push_back(keypoints2[good_matches[i].trainIdx].pt);
+    }
+
+    Mat rigidMatrix = estimateRigidTransform(points1, points2, false); // false for no scaling
+    return rigidMatrix;
+}
+
+//仿射对齐
+Mat matchAndComputeAffineTransform(const Mat& descriptors1, const Mat& descriptors2,
+    vector<KeyPoint>& keypoints1, vector<KeyPoint>& keypoints2) {
+    if (descriptors1.empty() || descriptors2.empty() || keypoints1.empty() || keypoints2.empty()) {
+        cerr << "Error: Input matrices or keypoints are empty." << endl;
+        return Mat();
+    }
+
+    BFMatcher matcher(NORM_HAMMING);
+    vector<DMatch> matches;
+    matcher.match(descriptors1, descriptors2, matches);
+
+    // Find good matches
+    double max_dist = 0; double min_dist = 100;
+    for (int i = 0; i < descriptors1.rows; i++) {
+        double dist = matches[i].distance;
+        if (dist < min_dist) min_dist = dist;
+        if (dist > max_dist) max_dist = dist;
+    }
+
+    vector<DMatch> good_matches;
+    for (int i = 0; i < descriptors1.rows; i++) {
+        if (matches[i].distance <= max(2 * min_dist, 30.0)) {
+            good_matches.push_back(matches[i]);
+        }
+    }
+
+    vector<Point2f> points1;
+    vector<Point2f> points2;
+    for (size_t i = 0; i < good_matches.size(); i++) {
+        points1.push_back(keypoints1[good_matches[i].queryIdx].pt);
+        points2.push_back(keypoints2[good_matches[i].trainIdx].pt);
+    }
+
+    Mat affineMatrix = estimateAffinePartial2D(points1, points2);
+    return affineMatrix;
+}
+
 Mat warpImageAffine(const Mat& image1, const Mat& affineMatrix, const Mat& image2) {
     if (image1.empty() || affineMatrix.empty() || image2.empty()) {
         std::cerr << "Error: Input images or transformation matrix is empty." << std::endl;
@@ -251,16 +327,17 @@ void processFITSFilesAffine(const char* charFolderPath, const char* charTargetFi
     Mat descriptors1, descriptors2;
     detectAndComputeORB(image, keypoints1, descriptors1);
     detectAndComputeORB(targetImage, keypoints2, descriptors2);
-    Mat H = matchAndComputeAffine(descriptors1, descriptors2, keypoints1, keypoints2);
+    Mat H = matchAndComputeRigidTransform(descriptors1, descriptors2, keypoints1, keypoints2);//刚性对齐matchAndComputeRigidTransform
+    //Mat H = matchAndComputeAffineTransform(descriptors1, descriptors2, keypoints1, keypoints2);//仿射对齐
 
-    // 对齐前的原始图像
-    imshow("Original Image", image);
-    waitKey(0);
+    //// 对齐前的原始图像
+    //imshow("Original Image", image);
+    //waitKey(0);
 
-    // 对齐后的图像
+    //// 对齐后的图像
     Mat alignedImage = warpImageAffine(image, H, targetImage);
-    imshow("Aligned Image", alignedImage);
-    waitKey(0);
+    //imshow("Aligned Image", alignedImage);
+    //waitKey(0);
 
     // 保存对齐后的图像
     saveFitsImage(charsavePath, alignedImage, naxes);
