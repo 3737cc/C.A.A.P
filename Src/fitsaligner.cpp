@@ -160,43 +160,86 @@ Mat matchAndComputeAffine(const Mat& descriptors1, const Mat& descriptors2, vect
     return affineMatrix;
 }
 
-//刚性对齐RigidTransform
-Mat matchAndComputeRigidTransform(const Mat& descriptors1, const Mat& descriptors2,
-    vector<KeyPoint>& keypoints1, vector<KeyPoint>& keypoints2) {
-    if (descriptors1.empty() || descriptors2.empty() || keypoints1.empty() || keypoints2.empty()) {
-        cerr << "Error: Input matrices or keypoints are empty." << endl;
-        return Mat();
-    }
-
-    BFMatcher matcher(NORM_HAMMING);
-    vector<DMatch> matches;
-    matcher.match(descriptors1, descriptors2, matches);
-
-    // Find good matches
-    double max_dist = 0; double min_dist = 100;
-    for (int i = 0; i < descriptors1.rows; i++) {
-        double dist = matches[i].distance;
-        if (dist < min_dist) min_dist = dist;
-        if (dist > max_dist) max_dist = dist;
-    }
-
-    vector<DMatch> good_matches;
-    for (int i = 0; i < descriptors1.rows; i++) {
-        if (matches[i].distance <= max(2 * min_dist, 30.0)) {
-            good_matches.push_back(matches[i]);
-        }
-    }
-
-    vector<Point2f> points1;
-    vector<Point2f> points2;
-    for (size_t i = 0; i < good_matches.size(); i++) {
-        points1.push_back(keypoints1[good_matches[i].queryIdx].pt);
-        points2.push_back(keypoints2[good_matches[i].trainIdx].pt);
-    }
-
-    Mat rigidMatrix = estimateRigidTransform(points1, points2, false); // false for no scaling
-    return rigidMatrix;
+//刚性对齐RigidTransform使用平均值和标准差来选取阈值
+Mat matchAndComputeRigidTransform(const Mat& descriptors1, const Mat& descriptors2, vector<KeyPoint>& keypoints1, vector<KeyPoint>& keypoints2) {
+if (descriptors1.empty() || descriptors2.empty() || keypoints1.empty() || keypoints2.empty()) {
+    cerr << "错误：输入矩阵或关键点为空。" << endl;
+    return Mat();
 }
+
+BFMatcher matcher(NORM_HAMMING);
+vector<DMatch> matches;
+matcher.match(descriptors1, descriptors2, matches);
+
+// 计算距离的平均值和标准差
+double sum = 0;
+for (const auto& match : matches) {
+    sum += match.distance;
+}
+double mean = sum / matches.size();
+
+double sq_sum = 0;
+for (const auto& match : matches) {
+    sq_sum += (match.distance - mean) * (match.distance - mean);
+}
+double stdev = sqrt(sq_sum / matches.size());
+
+// 选择好的匹配：距离小于平均值 + 2*标准差
+vector<DMatch> good_matches;
+for (const auto& match : matches) {
+    if (match.distance < mean + 2 * stdev) {
+        good_matches.push_back(match);
+    }
+}
+
+vector<Point2f> points1;
+vector<Point2f> points2;
+for (const auto& match : good_matches) {
+    points1.push_back(keypoints1[match.queryIdx].pt);
+    points2.push_back(keypoints2[match.trainIdx].pt);
+}
+
+// 计算刚性变换
+Mat rigidMatrix = estimateRigidTransform(points1, points2, false); // false表示无缩放
+return rigidMatrix;
+}
+
+//Mat matchAndComputeRigidTransform(const Mat& descriptors1, const Mat& descriptors2,
+//    vector<KeyPoint>& keypoints1, vector<KeyPoint>& keypoints2) {
+//    if (descriptors1.empty() || descriptors2.empty() || keypoints1.empty() || keypoints2.empty()) {
+//        cerr << "Error: Input matrices or keypoints are empty." << endl;
+//        return Mat();
+//    }
+//
+//    BFMatcher matcher(NORM_HAMMING);
+//    vector<DMatch> matches;
+//    matcher.match(descriptors1, descriptors2, matches);
+//
+//    // Find good matches
+//    double max_dist = 0; double min_dist = 100;
+//    for (int i = 0; i < descriptors1.rows; i++) {
+//        double dist = matches[i].distance;
+//        if (dist < min_dist) min_dist = dist;
+//        if (dist > max_dist) max_dist = dist;
+//    }
+//
+//    vector<DMatch> good_matches;
+//    for (int i = 0; i < descriptors1.rows; i++) {
+//        if (matches[i].distance <= max(2 * min_dist, 30.0)) {
+//            good_matches.push_back(matches[i]);
+//        }
+//    }
+//
+//    vector<Point2f> points1;
+//    vector<Point2f> points2;
+//    for (size_t i = 0; i < good_matches.size(); i++) {
+//        points1.push_back(keypoints1[good_matches[i].queryIdx].pt);
+//        points2.push_back(keypoints2[good_matches[i].trainIdx].pt);
+//    }
+//
+//    Mat rigidMatrix = estimateRigidTransform(points1, points2, false); // false for no scaling
+//    return rigidMatrix;
+//}
 
 //仿射对齐
 Mat matchAndComputeAffineTransform(const Mat& descriptors1, const Mat& descriptors2,
