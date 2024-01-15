@@ -160,6 +160,7 @@ Mat matchAndComputeAffine(const Mat& descriptors1, const Mat& descriptors2, vect
     return affineMatrix;
 }
 
+
 //刚性对齐RigidTransform使用平均值和标准差来选取阈值
 Mat matchAndComputeRigidTransform(const Mat& descriptors1, const Mat& descriptors2, vector<KeyPoint>& keypoints1, vector<KeyPoint>& keypoints2) {
 if (descriptors1.empty() || descriptors2.empty() || keypoints1.empty() || keypoints2.empty()) {
