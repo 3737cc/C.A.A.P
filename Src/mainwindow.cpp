@@ -163,7 +163,7 @@ void MainWindow::on_Noise_reduction_function_button_2_clicked()
 
 void MainWindow::on_Select_file_button_noise_reduction_clicked()
 {
-    Noise_reduction_targetFilePath = QFileDialog::getOpenFileName(this, "选择需降噪文件", QDir::homePath(), "FITS Files (*.fits)");
+    Noise_reduction_targetFilePath = QFileDialog::getExistingDirectory(this, "选择需降噪文件", QDir::homePath());
     if (!Noise_reduction_targetFilePath.isEmpty()) {
         ui->Select_file_label_noise_reduction->setText("目标文件路径: " + Noise_reduction_targetFilePath);
         qDebug() << "Selected target file path: " << Noise_reduction_targetFilePath;
@@ -184,13 +184,26 @@ void MainWindow::on_Save_file_button_noise_reduction_clicked()
 void MainWindow::on_Noise_reduction_button_clicked()
 {
     Smooth smooth;
-    QByteArray utf8objectFile = Noise_reduction_targetFilePath.toUtf8();
-    const char* objectFile = utf8objectFile.constData();
 
-    QString FFolderPath = Noise_reduction_saveFolderPath + "/Noise_reduction.fits" ;
-    QByteArray utf8saveLocation = FFolderPath.toUtf8();
-    const char* saveLocation = utf8saveLocation.constData();
-    smooth.processFitsFile(objectFile,saveLocation);
+    if (Noise_reduction_saveFolderPath.isEmpty() || Noise_reduction_targetFilePath.isEmpty()) {
+        qDebug() << "Please target file, and save folder paths";
+        return;
+    }
+    QDir directory(Noise_reduction_targetFilePath);
+    QStringList fitsFiles = directory.entryList(QStringList() << "*.fits", QDir::Files);
+
+    for (const QString& fitsFile : fitsFiles) {
+        QString filepath = Noise_reduction_targetFilePath + "/" + fitsFile;
+        QByteArray utf8objectFile = filepath.toUtf8();
+        const char* objectFile = utf8objectFile.constData();
+
+        QString FFolderPath = Noise_reduction_saveFolderPath + "/Noise_reduction_"+ fitsFile;
+        QByteArray utf8saveLocation = FFolderPath.toUtf8();
+        const char* saveLocation = utf8saveLocation.constData();
+
+        smooth.processFitsFile(objectFile, saveLocation);
+
+    }
 }
 
 //校准相关操作
