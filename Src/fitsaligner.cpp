@@ -32,6 +32,8 @@ Mat loadFitsImage(const char* filename, long* naxes) {
 
 void detectAndComputeORB(const Mat& image, vector<KeyPoint>& keypoints, Mat& descriptors) {
     Ptr<ORB> orb = ORB::create();
+    Mat images = image;
+    vector<KeyPoint>keypoint = keypoints;
 
     // 添加检测语句
     std::cout << "Before detectAndComputeORB: Image size = " << image.size() << std::endl;
@@ -40,6 +42,14 @@ void detectAndComputeORB(const Mat& image, vector<KeyPoint>& keypoints, Mat& des
 
     // 添加检测语句
     std::cout << "After detectAndComputeORB: Detected keypoints = " << keypoints.size() << std::endl;
+
+    // 添加星点中心标注处理图像
+    annotateStarCenters(images, keypoint);
+
+    // 在图像上显示带有标注的星点
+    //imshow("Original Image with Annotation", images);
+    //waitKey(1000);
+
 }//ORB检测没问题
 
 //非刚性对齐
@@ -341,21 +351,34 @@ void saveFitsImage(const char* filename, Mat& image, long* naxes) {
 
 }
 
-void processFITSFiles(const char* charFolderPath, const char* charTargetFilePath, const char* charsavePath) {
-    long naxes[2];
 
-    Mat image = loadFitsImage(charFolderPath, naxes);
-    Mat targetImage = loadFitsImage(charTargetFilePath, naxes);
+//中心星点标注
+void annotateStarCenters(Mat& image, const vector<KeyPoint>& keypoints) {
+    for (const auto& keypoint : keypoints) {
+        // 获取关键点的坐标
+        Point2f center = keypoint.pt;
 
-    vector<KeyPoint> keypoints1, keypoints2;
-    Mat descriptors1, descriptors2;
-    detectAndComputeORB(image, keypoints1, descriptors1);
-    detectAndComputeORB(targetImage, keypoints2, descriptors2);
-    Mat H = matchAndComputeHomography(descriptors1, descriptors2, keypoints1, keypoints2);
-    Mat alignedImage = warpImage(image, H, targetImage);
-
-    saveFitsImage(charsavePath, alignedImage, naxes);
+        // 在图像上绘制中心标注（红色圆点）
+        circle(image, center, 5, Scalar(0, 0, 255), -1);
+    }
 }
+
+
+//void processFITSFiles(const char* charFolderPath, const char* charTargetFilePath, const char* charsavePath) {
+//    long naxes[2];
+//
+//    Mat image = loadFitsImage(charFolderPath, naxes);
+//    Mat targetImage = loadFitsImage(charTargetFilePath, naxes);
+//
+//    vector<KeyPoint> keypoints1, keypoints2;
+//    Mat descriptors1, descriptors2;
+//    detectAndComputeORB(image, keypoints1, descriptors1);
+//    detectAndComputeORB(targetImage, keypoints2, descriptors2);
+//    Mat H = matchAndComputeHomography(descriptors1, descriptors2, keypoints1, keypoints2);
+//    Mat alignedImage = warpImage(image, H, targetImage);
+//
+//    saveFitsImage(charsavePath, alignedImage, naxes);
+//}
 
 void processFITSFilesAffine(const char* charFolderPath, const char* charTargetFilePath, const char* charsavePath) {
     long naxes[2];
@@ -382,9 +405,10 @@ void processFITSFilesAffine(const char* charFolderPath, const char* charTargetFi
     Mat alignedImage = warpImageAffine(image, H, targetImage);
     //imshow("Aligned Image", alignedImage);
     //waitKey(0);
-
+    
     // 保存对齐后的图像
     saveFitsImage(charsavePath, alignedImage, naxes);
+
 }
 
 
