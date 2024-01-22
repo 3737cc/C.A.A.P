@@ -1,9 +1,53 @@
 #include "fitscalibration.h"
+namespace fs = std::filesystem;
 
 FitscaLibration::FitscaLibration() {}
 
 FitscaLibration::~FitscaLibration() {}
 
+// 将函数定义为类的成员函数
+std::vector<std::string> FitscaLibration::getFitsFilesInDirectory(const std::string& directoryPath) {
+    std::vector<std::string> fitsFiles;
+    for (const auto& entry : fs::directory_iterator(directoryPath)) {
+        if (entry.path().extension() == ".fits") { // 确保只处理 .fits 文件
+            fitsFiles.push_back(entry.path().string());
+        }
+    }
+    return fitsFiles;
+}
+
+// 批量处理文件夹中的 FITS 文件的函数
+void FitscaLibration::flatCalibrations(const string& originalFileDirectory, const string& flatFieldPath, const string& saveLocation) {
+    auto files = getFitsFilesInDirectory(originalFileDirectory);
+    for (const auto& file : files) {
+        Mat originalImage = readFitsImage(file);
+        Mat flatField = readFitsImage(flatFieldPath);
+        Mat calibratedImage = flatCalibrate(originalImage, flatField);
+        saveFitsImage(saveLocation, "FlatCalibrated_" + fs::path(file).filename().string(), calibratedImage);
+    }
+}
+
+void FitscaLibration::darkCalibrations(const string& originalFileDirectory, const string& darkFieldPath, const string& saveLocation) {
+    auto files = getFitsFilesInDirectory(originalFileDirectory);
+    for (const auto& file : files) {
+        Mat originalImage = readFitsImage(file);
+        Mat flatField = readFitsImage(darkFieldPath);
+        Mat calibratedImage = darkCalibrate(originalImage, flatField);
+        saveFitsImage(saveLocation, "DarkCalibrated_" + fs::path(file).filename().string(), calibratedImage);
+    }
+}
+
+void FitscaLibration::biasCalibrations(const string& originalFileDirectory, const string& biasFieldPath, const string& saveLocation) {
+    auto files = getFitsFilesInDirectory(originalFileDirectory);
+    for (const auto& file : files) {
+        Mat originalImage = readFitsImage(file);
+        Mat flatField = readFitsImage(biasFieldPath);
+        Mat calibratedImage = biasCalibrate(originalImage, flatField);
+        saveFitsImage(saveLocation, "BiasCalibrated_" + fs::path(file).filename().string(), calibratedImage);
+    }
+}
+
+//进行校准fits文件
 void FitscaLibration::flatCalibration(const string& originalFilePath, const string& flatFieldPath, const string& saveLocation) {
     Mat originalImage = readFitsImage(originalFilePath);
     Mat flatField = readFitsImage(flatFieldPath);
@@ -123,7 +167,7 @@ void FitscaLibration::saveFitsImage(const string& saveLocation, const string& ou
     fits_close_file(outfptr, &status);
 }
 
-//平常校准
+//平场校准
 Mat FitscaLibration::flatCalibrate(const Mat& originalImage, const Mat& flatImage) {
     Mat calibratedImage;
     subtract(originalImage, flatImage, calibratedImage);

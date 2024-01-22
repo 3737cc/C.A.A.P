@@ -221,7 +221,7 @@ void MainWindow::on_Calibration_function_button_clicked()
 
 void MainWindow::on_Select_file_button_calibration_clicked()
 {
-    Calibration_folderPath = QFileDialog::getOpenFileName(this, "选择需校准文件", QDir::homePath(), "FITS Files (*.fits)");
+    Calibration_folderPath = QFileDialog::getExistingDirectory(this, "选择需校准文件", QDir::homePath());
     if (!Calibration_folderPath.isEmpty()) {
         ui->Select_file_label_calibration->setText("校准文件路径: " + Calibration_folderPath);
         qDebug() << "Selected target file path: " << Calibration_folderPath;
@@ -277,7 +277,7 @@ void MainWindow::on_Flat_field_button_clicked()
     const std::string Calibration_path = Calibration_folderPath.toStdString();
     const std::string Flat_path = Flat_targetFilePath.toStdString();
     const std::string Save_path = Calibration_saveFolderPath.toStdString();
-    fitscaLibration.flatCalibration(Calibration_path, Flat_path, Save_path);
+    fitscaLibration.flatCalibrations(Calibration_path, Flat_path, Save_path);
 }
 
 //暗场校准
@@ -287,7 +287,7 @@ void MainWindow::on_Dark_field_button_clicked()
     const std::string Calibration_path = Calibration_folderPath.toStdString();
     const std::string Dark_path = Dark_targetFilePath.toStdString();
     const std::string Save_path = Calibration_saveFolderPath.toStdString();
-    fitscaLibration.darkCalibration(Calibration_path, Dark_path, Save_path);
+    fitscaLibration.darkCalibrations(Calibration_path, Dark_path, Save_path);
 }
 
 //偏置场校准
@@ -297,7 +297,7 @@ void MainWindow::on_Bias_field_button_clicked()
     const std::string Calibration_path = Calibration_folderPath.toStdString();
     const std::string Bias_path = Bias_targetFilePath.toStdString();
     const std::string Save_path = Calibration_saveFolderPath.toStdString();
-    fitscaLibration.biasCalibration(Calibration_path, Bias_path, Save_path);
+    fitscaLibration.biasCalibrations(Calibration_path, Bias_path, Save_path);
 }
 
 //一键校准
