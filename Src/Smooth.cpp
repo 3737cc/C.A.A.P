@@ -38,9 +38,9 @@ void Smooth::processFitsFile(const char* inputFitsPath, const char* outputFitsPa
     // 转换为OpenCV图像
     cv::Mat inputImage(naxes[1], naxes[0], CV_32F, imageData);
 
-    // 应用平滑滤波
+    // 应用高斯滤波
     cv::Mat smoothedImage;
-    cv::GaussianBlur(inputImage, smoothedImage, cv::Size(5, 5), 0);  // 使用高斯滤波进行平滑
+    cv::bilateralFilter(inputImage, smoothedImage, 9, 75, 75);
 
     // 归一化图像数据到 [0, 4096] 范围
     cv::normalize(smoothedImage, smoothedImage, 0, 255, cv::NORM_MINMAX, -1, cv::Mat());

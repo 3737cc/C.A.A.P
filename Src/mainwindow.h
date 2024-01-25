@@ -66,6 +66,9 @@ private slots:
 
     void on_Noise_reduction_button_clicked();
 
+    void on_Bilateral_reduction_button_clicked();
+
+
     //校准相关操作
 
     void on_Calibration_function_button_clicked();
@@ -88,6 +91,8 @@ private slots:
     void on_Bias_field_button_clicked();
 
     void on_Calibration_button_clicked();
+
+
 
 private:
     Ui::MainWindow *ui;

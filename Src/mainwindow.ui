@@ -79,7 +79,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab_3">
      <attribute name="title">
@@ -450,7 +450,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>降噪</string>
+         <string>高斯降噪</string>
         </property>
        </widget>
        <widget class="QPushButton" name="Save_file_button_noise_reduction">
@@ -477,6 +477,19 @@
         </property>
         <property name="text">
          <string>保存文件路径</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="Bilateral_reduction_button">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>130</y>
+          <width>80</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>双边降噪</string>
         </property>
        </widget>
       </widget>

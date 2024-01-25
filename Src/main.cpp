@@ -3,6 +3,7 @@
 #include <QLocale>
 #include <QTranslator>
 #include <fitsaligner.h>
+#include <bilateral.h>
 
 int main(int argc, char *argv[])
 {

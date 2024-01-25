@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QString>
 #include <QByteArray>
+#include <bilateral.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -180,7 +181,7 @@ void MainWindow::on_Save_file_button_noise_reduction_clicked()
     }
 }
 
-
+//高斯降噪相关操作
 void MainWindow::on_Noise_reduction_button_clicked()
 {
     Smooth smooth;
@@ -202,6 +203,32 @@ void MainWindow::on_Noise_reduction_button_clicked()
         const char* saveLocation = utf8saveLocation.constData();
 
         smooth.processFitsFile(objectFile, saveLocation);
+
+    }
+}
+
+//双边滤波器降噪相关操作
+void MainWindow::on_Bilateral_reduction_button_clicked()
+{
+    Bilateral bilateral;
+
+    if (Noise_reduction_saveFolderPath.isEmpty() || Noise_reduction_targetFilePath.isEmpty()) {
+        qDebug() << "Please target file, and save folder paths";
+        return;
+    }
+    QDir directory(Noise_reduction_targetFilePath);
+    QStringList fitsFiles = directory.entryList(QStringList() << "*.fits", QDir::Files);
+
+    for (const QString& fitsFile : fitsFiles) {
+        QString filepath = Noise_reduction_targetFilePath + "/" + fitsFile;
+        QByteArray utf8objectFile = filepath.toUtf8();
+        const char* objectFile = utf8objectFile.constData();
+
+        QString FFolderPath = Noise_reduction_saveFolderPath + "/Noise_reduction_"+ fitsFile;
+        QByteArray utf8saveLocation = FFolderPath.toUtf8();
+        const char* saveLocation = utf8saveLocation.constData();
+
+        bilateral.processFitsFile(objectFile, saveLocation);
 
     }
 }
@@ -311,4 +338,7 @@ void MainWindow::on_Calibration_button_clicked()
     const std::string Save_path = Calibration_saveFolderPath.toStdString();
     fitscaLibration.calibration(Calibration_path, Flat_path, Dark_path, Bias_path, Save_path);
 }
+
+
+
 

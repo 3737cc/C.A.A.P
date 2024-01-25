@@ -29,6 +29,7 @@ set(PROJECT_SOURCES
     src/mainwindow.ui
     src/mainwindow.h
     src/fitscalibration.cpp
+    src/bilateral.cpp
 )
 
 
