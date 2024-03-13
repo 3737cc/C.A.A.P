@@ -9,6 +9,7 @@
 #include <QString>
 #include <QByteArray>
 #include <bilateral.h>
+#include <baryer.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -341,4 +342,51 @@ void MainWindow::on_Calibration_button_clicked()
 
 
 
+
+//解拜尔
+void MainWindow::on_Select_file_button_bayer_clicked()
+{
+    Bayer_folderPath = QFileDialog::getExistingDirectory(this, "选择文件夹", QDir::homePath());
+    if (!Bayer_folderPath.isEmpty()) {
+        // 用户选择了文件，可以进行相应的操作
+        ui->Select_file_label_bayer->setText("文件夹路径: " + Bayer_folderPath);
+        qDebug() << "Selected file path: " << Bayer_folderPath;
+    }
+}
+
+
+void MainWindow::on_Save_file_button_bayer_clicked()
+{
+    Bayer_saveFolderPath = QFileDialog::getExistingDirectory(this, "选择保存文件夹", QDir::homePath());
+    if (!Bayer_saveFolderPath.isEmpty()) {
+        ui->Save_file_label_bayer->setText("保存文件夹路径: " + Bayer_saveFolderPath);
+        qDebug() << "Selected save folder path: " << Bayer_saveFolderPath;
+    }
+}
+
+
+void MainWindow::on_Superposition_bayer_clicked()
+{
+    Baryer baryer;
+
+    if (Bayer_folderPath.isEmpty() || Bayer_saveFolderPath.isEmpty()) {
+        qDebug() << "Please target file, and save folder paths";
+        return;
+    }
+    QDir directory(Bayer_folderPath);
+    QStringList fitsFiles = directory.entryList(QStringList() << "*.fits", QDir::Files);
+
+    for (const QString& fitsFile : fitsFiles) {
+        QString filepath = Bayer_folderPath + "/" + fitsFile;
+        QByteArray utf8objectFile = filepath.toUtf8();
+        const char* objectFile = utf8objectFile.constData();
+
+        QString FFolderPath = Bayer_saveFolderPath + "/Baryer" + fitsFile;
+        QByteArray utf8saveLocation = FFolderPath.toUtf8();
+        const char* saveLocation = utf8saveLocation.constData();
+
+        baryer.sequence(objectFile, saveLocation);
+
+    }
+}
 

@@ -30,6 +30,7 @@ set(PROJECT_SOURCES
     src/mainwindow.h
     src/fitscalibration.cpp
     src/bilateral.cpp
+    src/baryer.cpp
 )
 
 

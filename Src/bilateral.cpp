@@ -1,6 +1,7 @@
 // smooth.cpp
 
 #include "bilateral.h"
+using namespace cv;
 
 Bilateral::Bilateral() {}
 
@@ -42,8 +43,9 @@ void Bilateral::processFitsFile(const char* inputFitsPath, const char* outputFit
     cv::Mat smoothedImage;
     cv::bilateralFilter(inputImage, smoothedImage, 9, 75, 75);
 
-    // 归一化图像数据到 [0, 4096] 范围
+    // 归一化图像数据到 [0, 255] 范围
     cv::normalize(smoothedImage, smoothedImage, 0, 255, cv::NORM_MINMAX, -1, cv::Mat());
+
 
     // 创建新的FITS文件
     fitsfile* newFitsPtr;
