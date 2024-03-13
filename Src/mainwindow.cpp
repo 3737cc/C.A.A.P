@@ -385,7 +385,7 @@ void MainWindow::on_Superposition_bayer_clicked()
         QByteArray utf8saveLocation = FFolderPath.toUtf8();
         const char* saveLocation = utf8saveLocation.constData();
 
-        baryer.sequence(objectFile, saveLocation);
+        baryer.saveRGBToFITS(objectFile, saveLocation);
 
     }
 }

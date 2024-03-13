@@ -14,8 +14,10 @@ void Baryer::fitsError(int status) {
     }
 }
 
-void Baryer::sequence(const char* inputFitsPath, const char* outputFitsPath) {
-    // 读取FITS文件
+
+void Baryer::saveRGBToFITS(const char* inputFitsPath, const char* outputFitsPath) {
+    // 这个方法的实现假定您已经处理了inputFitsPath的图像，比如使用cv::imread读取图像
+    //     fitsfile* fitsPtr;
     fitsfile* fitsPtr;
     int status = 0;
     fits_open_file(&fitsPtr, inputFitsPath, READONLY, &status);
@@ -46,30 +48,39 @@ void Baryer::sequence(const char* inputFitsPath, const char* outputFitsPath) {
 
     // 将 Bayer RG 图像转换为 BGR 格式
     Mat rgb_img;
-    cvtColor(inputImage, rgb_img, cv::COLOR_BayerRG2BGR);
+    cvtColor(bayer_img, rgb_img, cv::COLOR_BayerRG2BGR);
 
     // 归一化图像数据到 [0, 255] 范围
     cv::normalize(rgb_img, rgb_img, 0, 255, cv::NORM_MINMAX, -1, cv::Mat());
 
-    // 创建新的FITS文件
+    if (rgb_img.empty()) {
+        std::cerr << "Error: Image could not be loaded." << std::endl;
+        return;
+    }
+
     fitsfile* newFitsPtr;
-    fits_create_file(&newFitsPtr, outputFitsPath, &status);
+    char formattedFitsPath[256];
+    snprintf(formattedFitsPath, sizeof(formattedFitsPath), "!%s", outputFitsPath); // 使能覆盖现有文件
+    fits_create_file(&newFitsPtr, formattedFitsPath, &status);
     fitsError(status);
 
-    // 写入图像参数，使用源图像信息
-    fits_create_img(newFitsPtr, bitpix, naxis, naxes, &status);
+    long naxes3[3] = { rgb_img.cols, rgb_img.rows, 3 }; // 设置为3D立方体，第三维是通道数
+    fits_create_img(newFitsPtr, BYTE_IMG, 3, naxes3, &status);
     fitsError(status);
 
-    // 写入图像数据，使用与源图像一致的数据类型
-    fits_write_img(newFitsPtr, TFLOAT, 1, naxes[0] * naxes[1], rgb_img.data, &status);
-    fitsError(status);
+    // 分离通道并写入FITS
+    std::vector<cv::Mat> channels(3);
+    cv::split(rgb_img, channels);
 
-    // 关闭新的FITS文件
+    for (int k = 0; k < 3; ++k) {
+        long fpixel[3] = { 1, 1, k + 1 };
+        if (!channels[k].isContinuous()) {
+            channels[k] = channels[k].clone(); // 确保连续性
+        }
+        fits_write_pix(newFitsPtr, TBYTE, fpixel, naxes3[0] * naxes3[1], channels[k].data, &status);
+        fitsError(status);
+    }
+
     fits_close_file(newFitsPtr, &status);
     fitsError(status);
-
-    std::cout << "处理成功。输出的FITS文件保存在：" << outputFitsPath << std::endl;
-
-    // 释放内存
-    delete[] imageData;
 }

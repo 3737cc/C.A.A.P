@@ -6,7 +6,6 @@
 
 #include <fitsio.h>
 #include <opencv2/opencv.hpp>
-#include "filehandler.h"
 
 class Bilateral {
 public:
@@ -17,6 +16,7 @@ public:
 
 private:
     void fitsError(int status);
+
 };
 
 #endif // BILATERAL_H

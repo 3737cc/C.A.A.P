@@ -12,7 +12,7 @@ public:
     Baryer();
     ~Baryer();
 
-    void sequence(const char* inputFitsPath, const char* outputFitsPath);
+    void saveRGBToFITS(const char* inputFitsPath, const char* outputFitsPath);
 
 private:
     void fitsError(int status);
