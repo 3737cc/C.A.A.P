@@ -16,7 +16,6 @@ void Baryer::fitsError(int status) {
 
 
 void Baryer::saveRGBToFITS(const char* inputFitsPath, const char* outputFitsPath) {
-    // 这个方法的实现假定您已经处理了inputFitsPath的图像，比如使用cv::imread读取图像
     //     fitsfile* fitsPtr;
     fitsfile* fitsPtr;
     int status = 0;
