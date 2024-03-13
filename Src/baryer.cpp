@@ -44,8 +44,7 @@ void Baryer::saveRGBToFITS(const char* inputFitsPath, const char* outputFitsPath
     cv::Mat bayer_img;
     inputImage.convertTo(bayer_img, CV_8UC3);
 
-
-    // 将 Bayer RG 图像转换为 BGR 格式
+    // 将 Bayer RG 图像转换RGGB拜耳排布
     Mat rgb_img;
     cvtColor(bayer_img, rgb_img, cv::COLOR_BayerRG2BGR);
 
