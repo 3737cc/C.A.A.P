@@ -104,6 +104,8 @@ private slots:
 
     void on_Superposition_baryer_clicked();
 
+    void on_Baryer_function_button_2_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

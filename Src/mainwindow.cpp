@@ -344,6 +344,14 @@ void MainWindow::on_Calibration_button_clicked()
 
 
 //解拜尔
+void MainWindow::on_Baryer_function_button_2_clicked()
+{
+    int currentIndex = ui->Baryer_widget->currentIndex();
+
+    // 如果当前页面是页面0，切换到其他页面；否则，切换回页面0
+    ui->Baryer_widget->setCurrentIndex(currentIndex == 0 ? 1 : 0);
+}
+
 void MainWindow::on_Select_file_button_baryer_clicked()
 {
     Baryer_folderPath = QFileDialog::getExistingDirectory(this, "选择文件夹", QDir::homePath());
@@ -389,4 +397,7 @@ void MainWindow::on_Superposition_baryer_clicked()
 
     }
 }
+
+
+
 
