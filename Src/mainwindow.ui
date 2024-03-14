@@ -509,7 +509,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page_5">
        <widget class="QLabel" name="Save_file_label_superposing">
@@ -581,11 +581,11 @@
       <widget class="QWidget" name="page_6"/>
      </widget>
     </widget>
-    <widget class="QWidget" name="Bayer_tab">
+    <widget class="QWidget" name="Baryer_tab">
      <attribute name="title">
       <string>解拜尔</string>
      </attribute>
-     <widget class="QStackedWidget" name="Bayer_widget">
+     <widget class="QStackedWidget" name="Baryer_widget">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -598,7 +598,7 @@
        <number>0</number>
       </property>
       <widget class="QWidget" name="page_15">
-       <widget class="QLabel" name="Save_file_label_bayer">
+       <widget class="QLabel" name="Save_file_label_baryer">
         <property name="geometry">
          <rect>
           <x>9</x>
@@ -611,7 +611,7 @@
          <string>保存文件路径</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="Select_file_button_bayer">
+       <widget class="QPushButton" name="Select_file_button_baryer">
         <property name="geometry">
          <rect>
           <x>9</x>
@@ -624,7 +624,7 @@
          <string>选择文件</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="Superposition_bayer">
+       <widget class="QPushButton" name="Superposition_baryer">
         <property name="geometry">
          <rect>
           <x>9</x>
@@ -637,7 +637,7 @@
          <string>解拜尔</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="Save_file_button_bayer">
+       <widget class="QPushButton" name="Save_file_button_baryer">
         <property name="geometry">
          <rect>
           <x>9</x>
@@ -650,7 +650,7 @@
          <string>保存文件</string>
         </property>
        </widget>
-       <widget class="QLabel" name="Select_file_label_bayer">
+       <widget class="QLabel" name="Select_file_label_baryer">
         <property name="geometry">
          <rect>
           <x>9</x>
@@ -667,6 +667,19 @@
       <widget class="QWidget" name="page_16"/>
      </widget>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="Baryer_function_button_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>290</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>解拜尔</string>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

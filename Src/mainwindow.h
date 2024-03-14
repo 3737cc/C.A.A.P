@@ -36,8 +36,8 @@ public:
     QString Calibration_saveFolderPath; //保存
 
 //叠加的相关变量
-    QString Bayer_folderPath;    // 用于存储选择的文件夹路径
-    QString Bayer_saveFolderPath; // 用于存储选择的保存文件夹路径
+    QString Baryer_folderPath;    // 用于存储选择的文件夹路径
+    QString Baryer_saveFolderPath; // 用于存储选择的保存文件夹路径
 
 private slots:
     //对齐相关操作
@@ -98,11 +98,11 @@ private slots:
 
 
     //解拜尔
-    void on_Select_file_button_bayer_clicked();
+    void on_Select_file_button_baryer_clicked();
 
-    void on_Save_file_button_bayer_clicked();
+    void on_Save_file_button_baryer_clicked();
 
-    void on_Superposition_bayer_clicked();
+    void on_Superposition_baryer_clicked();
 
 private:
     Ui::MainWindow *ui;
