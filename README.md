@@ -21,5 +21,6 @@ FITS file superposition, calibration, denoising and alignment software is a soft
 * The software uses the OpenCV library for image processing, including alignment, noise reduction and so on.
 * The software uses the Qt library to build the graphical user interface.
 
+* Contact information:
 
-
+Email: fenghao3737@proton.me
